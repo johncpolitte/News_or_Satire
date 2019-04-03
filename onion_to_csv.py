@@ -4,11 +4,19 @@ import pandas as pd
 import numpy as np
 import re
 
+'''
+This .py file cleans the mongo collection 'onion_articles'
+in the aws ec2 and creates a dataframe. that dataframe is
+then converted into a csv and exported into a file called
+'onion_csv.csv'
 
+input: None
+output: onion_csv.csv
+'''
 
 client = MongoClient()
 db = client.capstone
-collection = db.onion1
+collection = db.onion_articles
 docs = collection.find()
 
 
