@@ -8,15 +8,28 @@ import itertools
 
 def cnn_cleaner(cnn_df):
     '''
-    
+    Partially cleans the articles in the cnn_df by removing 'CNN'
+    some punctuation characters and getting rid of capital letters.
+    Also adds dummy variables for Satire, Fox and CNN columns.
+    Lastly only takes first 5000 articles
+    input: pandas DataFrame (dirty)
+    output: pandas DataFrame (cleaned)
     '''
+    # Converts article bodies to list
     cnn_list = list(cnn_df.content)
+    # Creates empty list to append to
     clean_cnn_list = []
+    # Iterate through list of articles for cleaning
     for article in cnn_list:
+    # Removes CNN from articles
         clean_article = re.sub('CNN', '', article)
+    # Removes punctuation characters
         clean_article2 = re.sub('[)(,.]', '', clean_article)
+    # Removes capital letters and appends to clean_cnn_list
         clean_cnn_list.append(clean_article2.lower())
+    # Converts list to DataFrame
     clean_cnn_df = pd.DataFrame(clean_cnn_list, columns=['Article'])
+    # Creates dummy columns
     clean_cnn_df['Satire'] = 0
     clean_cnn_df['CNN'] = 1
     clean_cnn_df['Fox'] = 0
