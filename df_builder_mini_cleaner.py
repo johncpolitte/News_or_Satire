@@ -51,7 +51,7 @@ def fox_cleaner(fox_df):
     for article in fox_list:
     # Removes some of the punctuation
         clean = re.sub('[)(,.]', '', article)
-    # Adds 
+    # Adds
         clean_fox_list.append(clean.lower())
     clean_fox_df = pd.DataFrame(clean_fox_list, columns=['Article'])
     clean_fox_df['Satire'] = 0
@@ -60,13 +60,30 @@ def fox_cleaner(fox_df):
     return clean_fox_df
 
 def small_onion_clean(onion_df):
+    '''
+    Takes the first 5000 articles in the onion dataframe and creates a
+    DataFrame with the appropriate columns
+    input: pandas DataFrame
+    output: pandas DataFrame (clean)
+    '''
     onion_df = onion_df.drop('Title', axis=1)
     clean_onion_df = onion_df[0:5000]
     return clean_onion_df[['Article','Satire','CNN', 'Fox']]
 
 def build_df(onion_df, fox_df, cnn_df):
+    '''
+    Runs all the cleaner functions on their specific dataframes and combines
+    them into one DataFrame
+    input: three dirty pandas DataFrames (onion, fox, and cnn)
+    output: one big DataFrame
+    '''
     df_onion = small_onion_clean(onion_df)
     df_cnn = cnn_cleaner(cnn_df)
     df_fox = fox_cleaner(fox_df)
     df_final = pd.concat([df_onion, df_cnn, df_fox], axis = 0, ignore_index=True)
     return df_final
+
+
+
+
+    
