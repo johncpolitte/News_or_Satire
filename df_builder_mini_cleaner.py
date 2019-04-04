@@ -82,8 +82,3 @@ def build_df(onion_df, fox_df, cnn_df):
     df_fox = fox_cleaner(fox_df)
     df_final = pd.concat([df_onion, df_cnn, df_fox], axis = 0, ignore_index=True)
     return df_final
-
-
-
-
-    
