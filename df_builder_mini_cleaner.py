@@ -77,17 +77,24 @@ def build_df(onion_df, fox_df, cnn_df):
     input: three dirty pandas DataFrames (onion, fox, and cnn)
     output: one big DataFrame
     '''
+    # Performs the three preliminary cleaning functions and creates 1 data from 
+    # from the three independent data frames
     df_onion = small_onion_clean(onion_df)
     df_cnn = cnn_cleaner(cnn_df)
     df_fox = fox_cleaner(fox_df)
     df_final = pd.concat([df_onion, df_cnn, df_fox], axis = 0, ignore_index=True)
+    # Returns df_final after dropping all of the articles that are less
+    # than 50 words because some onion articles were not scrapped properly and
+    # some of the fox articles had no content
+    # Short_index returns a list of the indices for the short articles
+    # so they are just dropped from the DataFrame
     return df_final.drop(short_index(find_short_articles(df_final)))
-    
+
 
 def find_short_articles(df_final):
     '''
     Takes DataFrame where article content is in column
-    titles 'Artilce'and then returns article len for each article.
+    titles 'Article'and then returns article len for each article.
     input: DataFrame with column 'Article'
     output: list of article lengths
     '''
@@ -101,8 +108,8 @@ def find_short_articles(df_final):
 
 def short_index(article_lengths):
     '''
-    Takes in a list of article lengths and returns a list of indices where the article has less than
-    50 words
+    Takes in a list of article lengths and returns a list of indices where
+    the article has less than 50 words
     input: list of article lengths
     output: list of indices corresponding to the short articles
     '''
