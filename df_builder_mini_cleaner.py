@@ -77,7 +77,7 @@ def build_df(onion_df, fox_df, cnn_df):
     input: three dirty pandas DataFrames (onion, fox, and cnn)
     output: one big DataFrame
     '''
-    # Performs the three preliminary cleaning functions and creates 1 data from 
+    # Performs the three preliminary cleaning functions and creates 1 data from
     # from the three independent data frames
     df_onion = small_onion_clean(onion_df)
     df_cnn = cnn_cleaner(cnn_df)
@@ -120,3 +120,21 @@ def short_index(article_lengths):
             idx_list.append(idx)
             count+=1
     return idx_list
+
+
+def new_cleaner(df):
+    '''
+    Removes more features like punctuation and words that
+    should not be in there
+    Input: df_final
+    output: df_final with cleaned articles
+    '''
+    article_list = list(df_final.Article)
+    clean_list = []
+    for article in article_list:
+        samp1 = re.sub('[''\”\“\‘;:\'\'\'•·%$!&+}{|><_…/\’*0123456789\`]', '', article)
+        samp2 = re.sub('[-—]', ' ', samp1)
+        samp3 = samp2.replace('news','')
+        clean_list.append(samp3.replace('fox',''))
+    df['Article'] = clean_list
+    return df
