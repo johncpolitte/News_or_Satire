@@ -81,4 +81,35 @@ def build_df(onion_df, fox_df, cnn_df):
     df_cnn = cnn_cleaner(cnn_df)
     df_fox = fox_cleaner(fox_df)
     df_final = pd.concat([df_onion, df_cnn, df_fox], axis = 0, ignore_index=True)
-    return df_final
+    return df_final.drop(short_index(find_short_articles(df_final)))
+    
+
+def find_short_articles(df_final):
+    '''
+    Takes DataFrame where article content is in column
+    titles 'Artilce'and then returns article len for each article.
+    input: DataFrame with column 'Article'
+    output: list of article lengths
+    '''
+    count = 0
+    words = 0
+    article_len=[]
+    for x in list(df_final.Article):
+        length = len(x.split())
+        article_len.append(str(length))
+    return article_len
+
+def short_index(article_lengths):
+    '''
+    Takes in a list of article lengths and returns a list of indices where the article has less than
+    50 words
+    input: list of article lengths
+    output: list of indices corresponding to the short articles
+    '''
+    count = 0
+    idx_list = []
+    for idx, art in enumerate(article_lengths):
+        if int(art) < 50:
+            idx_list.append(idx)
+            count+=1
+    return idx_list
