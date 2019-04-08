@@ -122,19 +122,19 @@ def short_index(article_lengths):
     return idx_list
 
 
-def new_cleaner(df):
-    '''
-    Removes more features like punctuation and words that
-    should not be in there
-    Input: df_final
-    output: df_final with cleaned articles
-    '''
-    article_list = list(df_final.Article)
-    clean_list = []
-    for article in article_list:
-        samp1 = re.sub('[''\”\“\‘;:\'\'\'•·%$!&+}{|><_…/\’*0123456789\`]', '', article)
-        samp2 = re.sub('[-—]', ' ', samp1)
-        samp3 = samp2.replace('news','')
-        clean_list.append(samp3.replace('fox',''))
-    df['Article'] = clean_list
-    return df
+# def new_cleaner(df):
+#     '''
+#     Removes more features like punctuation and words that
+#     should not be in there
+#     Input: df_final
+#     output: df_final with cleaned articles
+#     '''
+#     article_list = list(df_final.Article)
+#     clean_list = []
+#     for article in article_list:
+#         samp1 = re.sub('[''\”\“\‘;:\'\'\'•·%$!&+}{|><_…/\’*0123456789\`]', '', article)
+#         samp2 = re.sub('[-—]', ' ', samp1)
+#         samp3 = samp2.replace('news','')
+#         clean_list.append(samp3.replace('fox',''))
+#     df['Article'] = clean_list
+#     return df
