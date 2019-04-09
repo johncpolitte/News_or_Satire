@@ -5,6 +5,26 @@ import numpy as np
 import re
 import itertools
 
+def build_df(onion_df, fox_df, cnn_df):
+    '''
+    Runs all the cleaner functions on their specific dataframes and combines
+    them into one DataFrame
+    input: three dirty pandas DataFrames (onion, fox, and cnn)
+    output: one big DataFrame
+    '''
+    # Performs the three preliminary cleaning functions and creates 1 data from
+    # from the three independent data frames
+    df_onion = small_onion_clean(onion_df)
+    df_cnn = cnn_cleaner(cnn_df)
+    df_fox = fox_cleaner(fox_df)
+    df_final = pd.concat([df_onion, df_cnn, df_fox], axis = 0, ignore_index=True)
+    # Returns df_final after dropping all of the articles that are less
+    # than 50 words because some onion articles were not scrapped properly and
+    # some of the fox articles had no content
+    # Short_index returns a list of the indices for the short articles
+    # so they are just dropped from the DataFrame
+    return df_final.drop(short_index(find_short_articles(df_final)))
+
 
 def cnn_cleaner(cnn_df):
     '''
@@ -69,26 +89,6 @@ def small_onion_clean(onion_df):
     onion_df = onion_df.drop('Title', axis=1)
     clean_onion_df = onion_df[0:5000]
     return clean_onion_df[['Article','Satire','CNN', 'Fox']]
-
-def build_df(onion_df, fox_df, cnn_df):
-    '''
-    Runs all the cleaner functions on their specific dataframes and combines
-    them into one DataFrame
-    input: three dirty pandas DataFrames (onion, fox, and cnn)
-    output: one big DataFrame
-    '''
-    # Performs the three preliminary cleaning functions and creates 1 data from
-    # from the three independent data frames
-    df_onion = small_onion_clean(onion_df)
-    df_cnn = cnn_cleaner(cnn_df)
-    df_fox = fox_cleaner(fox_df)
-    df_final = pd.concat([df_onion, df_cnn, df_fox], axis = 0, ignore_index=True)
-    # Returns df_final after dropping all of the articles that are less
-    # than 50 words because some onion articles were not scrapped properly and
-    # some of the fox articles had no content
-    # Short_index returns a list of the indices for the short articles
-    # so they are just dropped from the DataFrame
-    return df_final.drop(short_index(find_short_articles(df_final)))
 
 
 def find_short_articles(df_final):
