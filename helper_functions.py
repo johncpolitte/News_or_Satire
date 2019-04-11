@@ -340,7 +340,7 @@ def avg_tfidf_mag(training_data, training_labels):
     News_avg_mag = sums_arr[ytr_arr==0].sum()/tot_news_art
     return Sat_avg_mag, News_avg_mag
 
-def onion_prob_word_removal(vect_object, clean_sample):
+def onion_prob_word_removal(vect_object, clean_sample, trained_model):
     vect_sample = vect_object.transform(clean_sample)
     row_idx, col_idx, val = find(vect_sample)
     row_col_list = list(zip(list(row_idx),(col_idx)))
@@ -349,7 +349,7 @@ def onion_prob_word_removal(vect_object, clean_sample):
     for idx in row_col_list:
         vect_sample2 = vect_object.transform(clean_sample)
         vect_sample2[idx] = 0
-        prb = log_reg.predict_proba(vect_sample2)
+        prb = trained_model.predict_proba(vect_sample2)
         sat_prob = prb[0][1]
         probas_word_removal.append(sat_prob)
     countmin = 0
