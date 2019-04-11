@@ -165,6 +165,20 @@ def final_cleaner(df):
     df['Article'] = clean_list
     return df
 
+def single_article_cleaner(single_article):
+    '''
+    Removes more features like punctuation and words that
+    should not be in there
+    Input: df_final
+    output: df_final with cleaned articles
+    '''
+    clean_list = []
+    samp = single_article.lower()
+    samp1 = re.sub(r'\W+', ' ', samp)
+    samp2 = re.sub('[-—]', ' ', samp1)
+    samp3 = samp2.replace('news','')
+    clean_list.append(samp3.replace('fox',''))
+    return clean_list
 
 
 def word_count(content_list):
@@ -222,30 +236,58 @@ def main_tokenize(doc):
     # Returns list of tokens
     return cleaned_docs
 
-test_stop_words = ['serious','any', 'ours', 'go', 'do', 'else', 'while', 'somehow', 'seem', 'front', 'thick', 'once', 'system',
- 'latter', 'amongst', 'hence', 'un', 'cannot', 'more', 'eight', 'he', 'seems', 'it', 'hereafter', 'last', 'here',
- 'beyond', 'because', 'few', 'fill', 'his', 'further', 'sincere', 'their', 'made', 'fifty', 'whatever', 'whenever', 'been', 'describe', 'otherwise',
- 'or', 'our', 'move', 'eg', 'over', 'per', 'amoungst', 'perhaps', 'you', 'beside', 'hundred', 'across',
- 'which', 'where', 'anyone', 'anywhere', 'name', 'several', 'a', 'no', 'whence', 'mostly', 'so', 'call',
- 'seemed', 'everyone', 'these', 'besides', 'whom', 'whereby', 'eleven', 'thereupon', 'twelve', 'when', 'former', 'most',
- 'therein', 'had', 'hasnt', 'yourself', 'next', 'being', 'wherein', 'only', 'them', 'third', 'mine', 'show',
- 'nobody', 'sometimes', 'somewhere', 'still', 'were', 'with', 'became', 'how', 'yourselves', 'her', 'much',
- 'ltd', 'as', 'those', 'done', 'twenty', 'along', 'get', 'herself', 'interest', 'nor', 'however', 'same', 'side', 'whole', 'namely', 'might',
- 'if', 'has', 'up', 'both', 'not', 'bottom', 'ourselves', 'via', 'whither', 'fifteen', 'your', 'mill',
- 'someone', 'even', 'please', 'thus', 'under', 'are', 'in', 'etc', 'anyhow', 'after', 'hereupon', 'my', 'from',
- 'through', 'before', 'own', 'against', 'below', 'throughout', 'although', 'herein', 'himself', 'noone', 'will',
- 'also', 'thru', 'out', 'keep', 'something', 'there', 'nevertheless', 'nine', 'always', 'except', 'almost', 'some',
- 'couldnt', 'hereby', 'indeed', 'detail', 'moreover', 'hers', 're', 'all', 'six', 'themselves', 'two', 'already', 'forty',
- 'thereby', 'become', 'each', 'thence', 'within', 'nowhere', 'by', 'due', 'full', 'thin', 'us', 'anyway', 'other', 'among', 'this',
- 'though', 'without', 'then', 'five', 'another', 'first', 'myself', 'every', 'at', 'de', 'toward', 'whereafter',
- 'alone', 'beforehand', 'amount', 'ie', 'meanwhile', 'behind', 'must', 'now', 'others', 'many', 'be', 'con', 'an', 'formerly',
- 'everywhere', 'therefore', 'find', 'to', 'together', 'could', 'elsewhere', 'about', 'three', 'am', 'since', 'me',
- 'whose', 'ever', 'cry', 'becoming', 'whereas', 'see', 'well', 'back', 'everything', 'nothing', 'whether', 'itself', 'whoever', 'often', 'never', 'down', 'top', 'least', 'too',
- 'of', 'during', 'inc', 'less', 'that', 'she', 'give', 'than', 'latterly', 'they', 'fire', 'found', 'the',
- 'bill', 'thereafter', 'enough', 'very', 'have', 'its', 'who', 'anything', 'afterwards', 'around', 'upon',
- 'but', 'either', 'again', 'should', 'what', 'into', 'none', 'would', 'can', 'for', 'put', 'empty', 'why', 'is', 'him', 'above', 'between', 'four', 'off',
- 'cant', 'may', 'sometime', 'until', 'and', 'part', 'yet', 'onto', 'towards', 'neither', 'yours',
- 'we', 'take', 'rather', 'on', 'such', 'was', 'ten', 'becomes', 'co', 'one', 'i', 'seeming', 'wherever', 'whereupon', 'sixty']
+def tokenize_no_stemmer(doc):
+    '''
+    Tokenization function for the TFIDF vectorizor. This version of the tokenizer has no
+    stemming function
+    input: string of article
+    output: list of article tokens that have been stemmed
+    '''
+    # Tokenizes each word in the document
+    tokens = word_tokenize(doc)
+    # Defines an empty list to append the stemmed words to
+    cleaned_docs = []
+    # Creates PorterStemmer object
+    porter = PorterStemmer()
+    # For loop to iterate through tokens in document
+    for word in tokens:
+    # Removes tokens that are just one character
+        if len(word) < 2:
+            tokens.remove(word)
+    # Removes stop words from articles that are in test_stop_words
+    # list and appends porter stemmed words to the cleaned doc list
+        else:
+            if word not in test_stop_words:
+                    cleaned_docs.append(word)
+    # Returns list of tokens
+    return cleaned_docs
+
+def tokenize_election(doc):
+    '''
+    Tokenization function for the TFIDF vectorizor
+    input: string of article
+    output: list of article tokens that have been stemmed
+    '''
+    # Tokenizes each word in the document
+    tokens = word_tokenize(doc)
+    # Defines an empty list to append the stemmed words to
+    cleaned_docs = []
+    # Creates PorterStemmer object
+    porter = PorterStemmer()
+    # For loop to iterate through tokens in document
+    for word in tokens:
+    # Removes tokens that are just one character
+        if len(word) < 2:
+            tokens.remove(word)
+    # Removes stop words from articles that are in election_stop_words
+    # list and appends porter stemmed words to the cleaned doc list
+        else:
+            if word not in election_stop_words:
+                stem_word = porter.stem(word)
+                if stem_word not in election_stop_words:
+                    cleaned_docs.append(stem_word)
+    # Returns list of tokens
+    return cleaned_docs
 
 
 def model_performance_score(model, testing_data, testing_labels):
@@ -272,7 +314,7 @@ def high_low_beta_coef(vect_object, model_object):
             sort = dataframe of the words in the vector space and their beta coefficients
     '''
     # Creates a data frame for each word and its corresponding
-    features_df = pd.DataFrame(vect_object.get_feature_names())
+    feature_df = pd.DataFrame(vect_object.get_feature_names())
     feature_df['Beta_Coef'] = model_object.coef_.reshape(model_object.coef_.shape[1],)
     feature_df['Word'] = feature_df[0]
     beta_feature_df = feature_df[['Beta_Coef', 'Word']]
@@ -280,3 +322,96 @@ def high_low_beta_coef(vect_object, model_object):
     bot_top_coef = list(sort['Beta_Coef'][0:10]) + list(sort['Beta_Coef'][-10:])
     top_bot_words = list(sort['Word'][0:10]) + list(sort['Word'][-10:])
     return top_bot_words, bot_top_coef, sort
+
+def avg_tfidf_mag(training_data, training_labels):
+    '''
+    Calculates the average magnitude of the TFIDF vector for Satire and News
+    categories
+    input: sparse matrix for training
+    '''
+    row_norms=[]
+    for row in training_data:
+        row_norms.append(norm(row))
+    sums_arr =np.array(row_norms)
+    ytr_arr = np.array(training_labels)
+    tot_sat_art = np.sum(ytr_arr)
+    tot_news_art = len(ytr_arr) - tot_sat_art
+    Sat_avg_mag = sums_arr[ytr_arr==1].sum()/tot_sat_art
+    News_avg_mag = sums_arr[ytr_arr==0].sum()/tot_news_art
+    return Sat_avg_mag, News_avg_mag
+
+def onion_prob_word_removal(vect_object, clean_sample):
+    vect_sample = vect_object.transform(clean_sample)
+    row_idx, col_idx, val = find(vect_sample)
+    row_col_list = list(zip(list(row_idx),(col_idx)))
+    feat_array = np.array(vect_object.get_feature_names())
+    probas_word_removal = []
+    for idx in row_col_list:
+        vect_sample2 = vect_object.transform(clean_sample)
+        vect_sample2[idx] = 0
+        prb = log_reg.predict_proba(vect_sample2)
+        sat_prob = prb[0][1]
+        probas_word_removal.append(sat_prob)
+    countmin = 0
+    countmax = 0
+    for x in probas_word_removal:
+        if x == min(probas_word_removal):
+            minword = countmin
+        if x == max(probas_word_removal):
+            maxword = countmax
+        countmin += 1
+        countmax += 1
+    return probas_word_removal,feat_array[col_idx[minword]], feat_array[col_idx[maxword]]
+
+
+election_stop_words = ['serious','any', 'ours', 'go', 'do', 'else', 'while', 'somehow', 'seem', 'front', 'thick', 'once', 'system',
+ 'latter', 'amongst', 'hence', 'un', 'cannot', 'more', 'eight', 'he', 'seems', 'it', 'hereafter', 'last', 'here',
+ 'beyond', 'because', 'few', 'fill', 'his', 'further', 'sincere', 'their', 'made', 'fifty', 'whatever', 'whenever', 'been', 'describe', 'otherwise',
+ 'or', 'our', 'move', 'eg', 'over', 'per', 'amoungst', 'perhaps', 'you', 'beside', 'hundred', 'across',
+ 'which', 'where', 'anyone', 'anywhere', 'name', 'several', 'a', 'no', 'whence', 'mostly', 'so', 'call',
+ 'seemed', 'everyone', 'these', 'besides', 'whom', 'whereby', 'eleven', 'thereupon', 'twelve', 'when', 'former', 'most',
+ 'therein', 'had', 'hasnt', 'yourself', 'next', 'being', 'wherein', 'only', 'them', 'third', 'mine', 'show',
+ 'nobody', 'sometimes', 'somewhere', 'still', 'were', 'with', 'became', 'how', 'yourselves', 'her', 'much',
+ 'ltd', 'as', 'those', 'done', 'twenty', 'along', 'get', 'herself', 'interest', 'nor', 'however', 'same', 'side', 'whole', 'namely', 'might',
+ 'if', 'has', 'up', 'both', 'not', 'bottom', 'ourselves', 'via', 'whither', 'fifteen', 'your', 'mill',
+ 'someone', 'even', 'please', 'thus', 'under', 'are', 'in', 'etc', 'anyhow', 'after', 'hereupon', 'my', 'from',
+ 'through', 'before', 'own', 'against', 'below', 'throughout', 'although', 'herein', 'himself', 'noone', 'will',
+ 'also', 'thru', 'out', 'keep', 'something', 'there', 'nevertheless', 'nine', 'always', 'except', 'almost', 'some',
+ 'couldnt', 'hereby', 'indeed', 'detail', 'moreover', 'hers', 're', 'all', 'six', 'themselves', 'two', 'already', 'forty',
+ 'thereby', 'become', 'each', 'thence', 'within', 'nowhere', 'by', 'due', 'full', 'thin', 'us', 'anyway', 'other', 'among', 'this',
+ 'though', 'without', 'then', 'five', 'another', 'first', 'myself', 'every', 'at', 'de', 'toward', 'whereafter',
+ 'alone', 'beforehand', 'amount', 'ie', 'meanwhile', 'behind', 'must', 'now', 'others', 'many', 'be', 'con', 'an', 'formerly',
+ 'everywhere', 'therefore', 'find', 'to', 'together', 'could', 'elsewhere', 'about', 'three', 'am', 'since', 'me',
+ 'whose', 'ever', 'cry', 'becoming', 'whereas', 'see', 'well', 'back', 'everything', 'nothing', 'whether', 'itself', 'whoever', 'often', 'never', 'down', 'top', 'least', 'too',
+ 'of', 'during', 'inc', 'less', 'that', 'she', 'give', 'than', 'latterly', 'they', 'fire', 'found', 'the',
+ 'bill', 'thereafter', 'enough', 'very', 'have', 'its', 'who', 'anything', 'afterwards', 'around', 'upon',
+ 'but', 'either', 'again', 'should', 'what', 'into', 'none', 'would', 'can', 'for', 'put', 'empty', 'why', 'is', 'him', 'above', 'between', 'four', 'off',
+ 'cant', 'may', 'sometime', 'until', 'and', 'part', 'yet', 'onto', 'towards', 'neither', 'yours',
+ 'we', 'take', 'rather', 'on', 'such', 'was', 'ten', 'becomes', 'co', 'one', 'i', 'seeming', 'wherever', 'whereupon', 'sixty', 'trump', 'donald', 'hilary', 'clinton',
+    'election', 'primary', 'mike', 'pence', 'vote', 'voter', 'poll', 'tim', 'kaine', 'republican', 'democrat', 'washington',
+    'president', 'obama']
+
+test_stop_words = ['serious','any', 'ours', 'go', 'do', 'else', 'while', 'somehow', 'seem', 'front', 'thick', 'once', 'system',
+ 'latter', 'amongst', 'hence', 'un', 'cannot', 'more', 'eight', 'he', 'seems', 'it', 'hereafter', 'last', 'here',
+ 'beyond', 'because', 'few', 'fill', 'his', 'further', 'sincere', 'their', 'made', 'fifty', 'whatever', 'whenever', 'been', 'describe', 'otherwise',
+ 'or', 'our', 'move', 'eg', 'over', 'per', 'amoungst', 'perhaps', 'you', 'beside', 'hundred', 'across',
+ 'which', 'where', 'anyone', 'anywhere', 'name', 'several', 'a', 'no', 'whence', 'mostly', 'so', 'call',
+ 'seemed', 'everyone', 'these', 'besides', 'whom', 'whereby', 'eleven', 'thereupon', 'twelve', 'when', 'former', 'most',
+ 'therein', 'had', 'hasnt', 'yourself', 'next', 'being', 'wherein', 'only', 'them', 'third', 'mine', 'show',
+ 'nobody', 'sometimes', 'somewhere', 'still', 'were', 'with', 'became', 'how', 'yourselves', 'her', 'much',
+ 'ltd', 'as', 'those', 'done', 'twenty', 'along', 'get', 'herself', 'interest', 'nor', 'however', 'same', 'side', 'whole', 'namely', 'might',
+ 'if', 'has', 'up', 'both', 'not', 'bottom', 'ourselves', 'via', 'whither', 'fifteen', 'your', 'mill',
+ 'someone', 'even', 'please', 'thus', 'under', 'are', 'in', 'etc', 'anyhow', 'after', 'hereupon', 'my', 'from',
+ 'through', 'before', 'own', 'against', 'below', 'throughout', 'although', 'herein', 'himself', 'noone', 'will',
+ 'also', 'thru', 'out', 'keep', 'something', 'there', 'nevertheless', 'nine', 'always', 'except', 'almost', 'some',
+ 'couldnt', 'hereby', 'indeed', 'detail', 'moreover', 'hers', 're', 'all', 'six', 'themselves', 'two', 'already', 'forty',
+ 'thereby', 'become', 'each', 'thence', 'within', 'nowhere', 'by', 'due', 'full', 'thin', 'us', 'anyway', 'other', 'among', 'this',
+ 'though', 'without', 'then', 'five', 'another', 'first', 'myself', 'every', 'at', 'de', 'toward', 'whereafter',
+ 'alone', 'beforehand', 'amount', 'ie', 'meanwhile', 'behind', 'must', 'now', 'others', 'many', 'be', 'con', 'an', 'formerly',
+ 'everywhere', 'therefore', 'find', 'to', 'together', 'could', 'elsewhere', 'about', 'three', 'am', 'since', 'me',
+ 'whose', 'ever', 'cry', 'becoming', 'whereas', 'see', 'well', 'back', 'everything', 'nothing', 'whether', 'itself', 'whoever', 'often', 'never', 'down', 'top', 'least', 'too',
+ 'of', 'during', 'inc', 'less', 'that', 'she', 'give', 'than', 'latterly', 'they', 'fire', 'found', 'the',
+ 'bill', 'thereafter', 'enough', 'very', 'have', 'its', 'who', 'anything', 'afterwards', 'around', 'upon',
+ 'but', 'either', 'again', 'should', 'what', 'into', 'none', 'would', 'can', 'for', 'put', 'empty', 'why', 'is', 'him', 'above', 'between', 'four', 'off',
+ 'cant', 'may', 'sometime', 'until', 'and', 'part', 'yet', 'onto', 'towards', 'neither', 'yours',
+ 'we', 'take', 'rather', 'on', 'such', 'was', 'ten', 'becomes', 'co', 'one', 'i', 'seeming', 'wherever', 'whereupon', 'sixty']
