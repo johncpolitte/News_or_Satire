@@ -203,7 +203,7 @@ def word_count_graph(word_counts_df):
     Creates bar graph of the average number of words per article from each of
     the three sources
     '''
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(10,10))
     plt.bar(word_counts_df.Source.values,word_counts_df.Average_Word_Count, color ='rby')
     ax.set_title("Average Word Count Based on News Source", fontsize = 15)
     ax.set_ylabel("Average Word Count", fontsize = 15)
