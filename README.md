@@ -1,3 +1,11 @@
+# The Onion or Real News
+## Introduction
+This project is an investigation into if an article can be distinguished between “The Onion” and real news based on the text. Fake news is a hot topic in the national conscience these days, and it is important for people to be able to distinguish the two. This project addressed a small portion of this problem by addressing “The Onion.” “The Onion” is a satirical media company that publishes articles in a voice that are trying to mimic the tone and structure of traditional news reporting in a satirical way. Throughout “The Onions” existence, many prominent people and countries have fallen for their articles and believed them to be true. In 2012, “The Onion” ran an article that stated Kim Jong Un was the sexiest man alive for that year, and China picked up the story and ran with it as fact. There are even sub-reddits dedicated to examples of times people fell for different articles. In order to help people not fall for articles from “The Onion,” I built a model that can distinguish between articles from the satirical website, and actual news sources. 
+
+
+
+
+
 # Satire, Liberal News, and Conservative News. Is There a Difference?
 
 
