@@ -291,10 +291,25 @@ def tokenize_election(doc):
 
 
 def model_performance_score(model, testing_data, testing_labels):
+    '''
+    This function calculates the F1 score, precision and recall of
+    a model.
+    input: trained model object, testing data (X_test), and testing
+    labels (y_test)
+    output: string that prints the F1 score, precision, and recall of
+    the trained model
+    '''
+    # Creates a variable for the predicted y values based on the
+    # testing data
     y_pred = model.predict(testing_data)
+    # Creates a confusion matrix by comparing the predicted y's
+    # and y_test
     con_mat = confusion_matrix(testing_labels, y_pred)
+    # calculates the recall
     recall = con_mat[1,1]/(con_mat[1,1]+con_mat[1,0])
+    # calculates the precision
     precision = con_mat[1,1]/(con_mat[1,1]+con_mat[0,1])
+    # calculates the F1 score
     F1 = ((precision*recall)/(precision+recall))*2
     return 'F1 = {}, Precision = {}, Recall = {}'.format(F1, precision, recall)
 
@@ -328,6 +343,7 @@ def avg_tfidf_mag(training_data, training_labels):
     Calculates the average magnitude of the TFIDF vector for Satire and News
     categories
     input: sparse matrix for training
+    output: average mag for onion articles and news articles
     '''
     row_norms=[]
     for row in training_data:
@@ -341,9 +357,40 @@ def avg_tfidf_mag(training_data, training_labels):
     return Sat_avg_mag, News_avg_mag
 
 def onion_prob_word_removal(vect_object, clean_sample, trained_model):
+    '''
+    This fuction creates a list of probabilities of an articles being
+    from the onion as words are removed from the corpus one at a time.
+    The list can then be graphed to show how the probabilities change.
+    The function also returns the words that once they are removed
+    result in the article having the highest probability of being an
+    onion article (maxword), and the lowest probability of being an
+    onion article (minword).
+    input: vect_object: trained tfidf vectorizor object that can
+                fit with a new article.
+            clean_sample: string that is a sample article that has
+                been cleaned with the single_article_cleaner function
+            trained_model: trained model object that can predict the
+                probability of the article being classified as onion
+                or news
+    output: probas_word_removal: list of the probabilites of the article
+                being classified as an onion article as words are removed
+                from the corpus
+            feat_array[col_idx[minword]]: The word in the corpus that has the
+                the lowest probability results
+                in
+    '''
+    # Transforms sample article into the tfidf vectorizor. Creates a
+    # sparse matrix with the tfidf values for the words in the corpus
     vect_sample = vect_object.transform(clean_sample)
+    # returns the indicies of the the rows, and columns that exist
+    # in the sparse matrix. Also returns the values for those rows
+    # columns
     row_idx, col_idx, val = find(vect_sample)
+    # Creates a list of tuples that represent the location of the
+    # values in the sparse matrix
     row_col_list = list(zip(list(row_idx),(col_idx)))
+    # Creates an array of the words that represent the columns in the
+    # sparse matrix
     feat_array = np.array(vect_object.get_feature_names())
     probas_word_removal = []
     for idx in row_col_list:
@@ -354,6 +401,7 @@ def onion_prob_word_removal(vect_object, clean_sample, trained_model):
         probas_word_removal.append(sat_prob)
     countmin = 0
     countmax = 0
+    # Finds the min and max prob and the corresponding words
     for x in probas_word_removal:
         if x == min(probas_word_removal):
             minword = countmin
