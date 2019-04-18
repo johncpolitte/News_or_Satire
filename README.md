@@ -31,3 +31,28 @@ The CNN and Fox news articles are coming from a dataset that I found online. The
     
 For the Onion articles, I built a webscrapper that scraped the content of each article and stored them into MongoDB. Ideally I will have upwards of 5,000 articles, so that I can have the same size set of articles for each "news" source. 
 
+
+
+<img src="images/README_IMG/NB_con_mat.png"
+    style="float: left; margin-right: 10px;" />
+
+<img src="images/README_IMG/beta_coef_election_stop_words.png"
+    style="float: left; margin-right: 10px;" />
+
+<img src="images/README_IMG/beta_cof_log_reg.png"
+    style="float: left; margin-right: 10px;" />
+
+<img src="images/README_IMG/log_reg_con_mat.png"
+    style="float: left; margin-right: 10px;" />
+
+<img src="images/README_IMG/proba_word_removal.png"
+    style="float: left; margin-right: 10px;" />
+
+<img src="images/README_IMG/roc_curve.png"
+    style="float: left; margin-right: 10px;" />
+
+<img src="images/README_IMG/vector_mag.png"
+    style="float: left; margin-right: 10px;" />
+
+<img src="images/README_IMG/word_count.png"
+    style="float: left; margin-right: 10px;" />
