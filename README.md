@@ -7,10 +7,12 @@ This project is an investigation into if an article can be distinguished between
 To accomplish this task I will use natural language processing and different modeling techniques to predict where the article was published. I will be using articles from "The Onion", "CNN", and "Fox News". The first step will be to build a model that can differentiate between satire and actual news. Then I will see if my model can differentiate between "CNN", and "Fox News".
 
 ## Repository Information
-A more in depth look into this project can be found in the Onion_or_News_notebook.ipynb found here :
+A more in depth look into this project can be found in the Onion_or_News_notebook.ipynb found here:
 https://github.com/johncpolitte/News_or_Satire/blob/master/Onion_or_News_notebook.ipynb
 
-All of the code for this project can be found in the src file (https://github.com/johncpolitte/News_or_Satire/tree/master/src). The helper_functions.py file contains all of the functions used in the jupyter notebook mentioned above. 
+All of the code for this project can be found in the src file here: https://github.com/johncpolitte/News_or_Satire/tree/master/src  
+
+The helper_functions.py file contains all of the functions used in the jupyter notebook mentioned above. 
 
 web_scraper.py is the file used to scrape "The Onion" articles from their website and store them in a MongoDB. This was done using an EC2 on AWS. 
 
