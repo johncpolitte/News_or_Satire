@@ -93,7 +93,6 @@ def fox_cleaner(fox_df):
     for article in fox_list:
     # Removes some of the punctuation
         clean = re.sub('[)(,.]', '', article)
-    # Adds
         clean_fox_list.append(clean.lower())
     clean_fox_df = pd.DataFrame(clean_fox_list, columns=['Article'])
     clean_fox_df['Satire'] = 0

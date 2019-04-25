@@ -40,7 +40,17 @@ I found that the average word count for each of the three sources of articles di
 
 In the Logistic Regression Exploration section I ran two separate tests to confirm the normalization process was working. 
 
+## Article Vectorization
+Before the models could be trained, the data was split into a training and testing set. 25% of the articles were used to test the models, while the remaining 75% of the data was used to train the models. After the data was split, the training data was fit and transformed into a tfidf vectorizor, in order to get a term-document matrix for training purposes. For this transformation, various natural language processing techniques were used via the main_tokenize function that can be found in the helper_functions.py file. This function tokenized all of the words in each document, removed stop words, and stemmed all of the words. A maximum document frequency of .9, and a minimum document frequency of 10 were used after performing a grid search to optimize these parameters. The vectors were also normalized, so that the sum of squares of the vector elements was 1. Finally, the testing data was transformed into the term-document matrix, so it could be used for testing in the models. This was performed after the training data to prevent data leakage. 
+
 ## Model Results
+In order to classify an article as being from "The Onion" or a news source I trained two different models. 
+
+The first model trained was a logistic regression model. This model was selected because it is a great tool for binary classification problems, and its interpretability is straight forward. By using this model, the various variables (in this case, the words in the corpus) were easy to investigate because their association with news and Onion articles were able to be measured by their beta coefficients. 
+
+The second model that was trained was a Naïve Bayes classifier because it is generally a good baseline for text classification models. The model assumes independence for all of the words in the corpus, which is necessary when there are a large number of features (words in corpus) with varying degrees of importance. A grid search was also performed to optimize the alpha value for the model. The grid search returned an alpha value of .01. 
+
+Both of these models ended up performing very well, but the logistic regression model outperformed the Naïve Bayes classifier by a small margin. The Logistic Regression model had an accuracy of 97%, and an F1 score of 96%, while the Naïve Bayes classifier had an accuracy of 93% and an F1 Score of 89%. The confusion matrices, and ROC curves for both of these models are shown below. 
 
 <img src="images/README_IMG/log_reg_con_mat.png"
     style="float: left; margin-right: 10px;" />
@@ -59,8 +69,10 @@ In the Logistic Regression Exploration section I ran two separate tests to confi
 <img src="images/README_IMG/beta_cof_log_reg.png"
     style="float: left; margin-right: 10px;" />
 
+### Half of a CNN article
 To confirm that the data was being normalized correctly I performed two separate tests. The first test was to cut a CNN article to be the length of an average Onion article. Using an article that was 196 words, the logistic regression model still classified the article to be a news article with a probability of 80%. 
 
+### Magnitude of Tfidf Vectors
 The second test was to find the average magnitude of all the Onion article vectors, and news article vectors after the articles were vectorized using the TFIDF Vectorizor. The average magnitude for the Onion article vectors and news article vectors can be found in the bar graph below. Both had an average magnitude of 1. With both of these tests I was able to confirm that the normalization process was working correctly. 
 
 <img src="images/README_IMG/vector_mag.png"
@@ -72,10 +84,10 @@ The second test was to find the average magnitude of all the Onion article vecto
 
 
 
-
-
+### Trump Onion Article
+To gain a deeper understanding of how the logistic regression model was working an Onion article about Trump was tested because the word Trump has such a strong association with an article being classified as a News article. The probability of the article being classified as an Onion article was plotted as every word in the corpus was removed one at a time. This graph is shown below. The probability of the article being classified as an Onion article never drops below 70% regarless of which word was removed. The lowest probability corresponds to when 'reportedli' was removed from the test corpus, and the highest probability corresponds with the word 'trump' being removed from the corpus. This confirms that the model was working correctly because "reportedli" has such a strong association with an article being classified as an Onion article, and 'trump' has such a strong association with the article being classified as a news article. This small test gives a better understanding to how the logistic regression model works, and confirms it is working correctly. 
 <img src="images/README_IMG/proba_word_removal.png"
     style="float: left; margin-right: 10px;" />
 
-
+## Future Exploration
 
