@@ -62,12 +62,17 @@ Both of these models ended up performing very well, but the logistic regression 
     style="float: left; margin-right: 10px;" />
 
 ## Logistic Regression Exploration
+The logistic regression model was performing suspiciously well, so an exploration into the features was performed to gain a better understanding of how the model was classifying the articles into the two classes. The graph below shows the stemmed words that are most associated with an article being classified as news in red, and the words most associated with “The Onion” in blue. 
+
+<img src="images/README_IMG/beta_cof_log_reg.png"
+    style="float: left; margin-right: 10px;" />
+
+One concern with the results of this exploration was the number of “election terms” that were associated with news articles. This was concerning because a large number of news articles came from the time of the election, so Fox and CNN were covering it extensively. To address this issue “election terms” like trump, clinton, election, primary, republican and democrat were added to the stop word removal process. The complete list of stop words are listed in the helper_functions.py file. The model ended up performing just as well as it previously did and the new words and their associations with being classified as a news article, or Onion article are shown below. 
 
 <img src="images/README_IMG/beta_coef_election_stop_words.png"
     style="float: left; margin-right: 10px;" />
 
-<img src="images/README_IMG/beta_cof_log_reg.png"
-    style="float: left; margin-right: 10px;" />
+
 
 ### Half of a CNN article
 To confirm that the data was being normalized correctly I performed two separate tests. The first test was to cut a CNN article to be the length of an average Onion article. Using an article that was 196 words, the logistic regression model still classified the article to be a news article with a probability of 80%. 
@@ -78,16 +83,12 @@ The second test was to find the average magnitude of all the Onion article vecto
 <img src="images/README_IMG/vector_mag.png"
     style="float: left; margin-right: 10px;" />
 
-
-
-
-
-
-
 ### Trump Onion Article
 To gain a deeper understanding of how the logistic regression model was working an Onion article about Trump was tested because the word Trump has such a strong association with an article being classified as a News article. The probability of the article being classified as an Onion article was plotted as every word in the corpus was removed one at a time. This graph is shown below. The probability of the article being classified as an Onion article never drops below 70% regarless of which word was removed. The lowest probability corresponds to when 'reportedli' was removed from the test corpus, and the highest probability corresponds with the word 'trump' being removed from the corpus. This confirms that the model was working correctly because "reportedli" has such a strong association with an article being classified as an Onion article, and 'trump' has such a strong association with the article being classified as a news article. This small test gives a better understanding to how the logistic regression model works, and confirms it is working correctly. 
 <img src="images/README_IMG/proba_word_removal.png"
     style="float: left; margin-right: 10px;" />
 
 ## Future Exploration
+This project had very promising results, but there are a few different directions it can go for future studies. For the next iteration of the project, I would gather more sources of satire to train the model. This would allow me to actually test if the model can pick up on satire instead of just differentiating between “Onion” articles and news articles. 
+After this iteration of the project, I would also train the model using local news sources that target smaller audiences. “The Onion” writing style tends to target a local audience, while CNN and Fox News target a national audience. By training the model with local news sources I would be able to eliminate some some of the bias in the model, but the performance would likely decrease. 
 
